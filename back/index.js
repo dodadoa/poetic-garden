@@ -1,6 +1,10 @@
-import { Client } from 'node-osc';
+import { Server } from 'node-osc';
 
-const client = new Client('127.0.0.1', 3333);
-client.send('/oscAddress', 200, () => {
-  client.close();
+var oscServer = new Server(3333, '0.0.0.0', () => {
+  console.log('OSC Server is listening');
+});
+
+oscServer.on('message', function (msg) {
+  console.log(`Message: ${msg}`);
+  oscServer.close();
 });
