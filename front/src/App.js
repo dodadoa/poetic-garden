@@ -1,8 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import osc from 'osc/dist/osc-browser.min.js'
 
 function App() {
+  const [message, setMessage] = useState("")
 
   useEffect(() => {
     const oscPort = new osc.WebSocketPort({
@@ -12,12 +13,13 @@ function App() {
     oscPort.open()
     oscPort.on("message", function (oscMsg) {
       console.log(oscMsg)
-      console.log("An OSC message just arrived!");
+      setMessage(oscMsg.args[0].value)
     });
   }, [])
 
   return (
     <div className="App">
+      {message}
     </div>
   );
 }
