@@ -16,7 +16,6 @@ wss.on('connection', function connection(ws) {
   oscServer.on('message', function (msg) {
     console.log(`Message: ${msg}`);
     ws.send(`Message: ${msg}`);
-    oscServer.close();
   });
 
   ws.send('something');

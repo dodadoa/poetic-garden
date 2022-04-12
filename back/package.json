@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.17.3",
     "node-osc": "^6.1.16",
     "ws": "^8.5.0"
   }
