@@ -1,0 +1,15 @@
+{
+  "folders": [
+    {
+      "path": "back"
+    },
+    {
+      "path": "front"
+    }
+  ],
+  "settings": {
+    "editor.quickSuggestions": {
+      "strings": true
+    }
+  }
+}
