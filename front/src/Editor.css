@@ -1,0 +1,11 @@
+.editor-container {
+    border: none;
+    height: 40em;
+    cursor: text;
+    width: 50em;
+    color: rgb(159, 204, 56);
+    padding: 1em;
+    font-size: 20px;
+    font-family: "Croissant One", cursive;
+    font-weight: 200;
+}

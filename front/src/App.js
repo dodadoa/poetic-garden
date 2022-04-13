@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Editor from './Editor'
 import './App.css'
 import osc from 'osc/dist/osc-browser.min.js'
 
@@ -20,6 +21,7 @@ function App() {
   return (
     <div className="App">
       {message}
+      <Editor />
     </div>
   );
 }
