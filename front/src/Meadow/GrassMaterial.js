@@ -3,15 +3,15 @@ import { shaderMaterial } from "@react-three/drei"
 import { extend } from "@react-three/fiber"
 
 const GrassMaterial = shaderMaterial(
-    {
-        bladeHeight: 1,
-        map: null,
-        alphaMap: null,
-        time: 0,
-        tipColor: new THREE.Color(0.0, 0.6, 0.0).convertSRGBToLinear(),
-        bottomColor: new THREE.Color(0.0, 0.1, 0.0).convertSRGBToLinear(),
-    },
-    `   precision mediump float;
+  {
+    bladeHeight: 1,
+    map: null,
+    alphaMap: null,
+    time: 0,
+    tipColor: new THREE.Color(0.0, 0.6, 0.0).convertSRGBToLinear(),
+    bottomColor: new THREE.Color(0.0, 0.1, 0.0).convertSRGBToLinear(),
+  },
+  `   precision mediump float;
       attribute vec3 offset;
       attribute vec4 orientation;
       attribute float halfRootAngleSin;
@@ -91,7 +91,7 @@ const GrassMaterial = shaderMaterial(
         //Calculate final position of the vertex from the world offset and the above shenanigans 
         gl_Position = projectionMatrix * modelViewMatrix * vec4(offset + vPosition, 1.0 );
       }`,
-    `
+  `
       precision mediump float;
       uniform sampler2D map;
       uniform sampler2D alphaMap;
@@ -116,9 +116,9 @@ const GrassMaterial = shaderMaterial(
         #include <tonemapping_fragment>
 	      #include <encodings_fragment>
       }`,
-    (self) => {
-        self.side = THREE.DoubleSide
-    },
+  (self) => {
+    self.side = THREE.DoubleSide
+  },
 )
 
 extend({ GrassMaterial })

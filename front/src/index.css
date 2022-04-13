@@ -1,12 +1,10 @@
+@import "/node_modules/draft-js/dist/Draft.css";
+@import "/node_modules/prismjs/themes/prism-dark.css";
+
 body {
   margin: 0;
-  font-family: Consolas, 'Helvetica Neue', sans-serif;
+  font-family: "Croissant One", cursive;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }
