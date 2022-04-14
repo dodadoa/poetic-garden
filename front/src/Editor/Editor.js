@@ -1,21 +1,24 @@
 import React, { useRef, useEffect } from "react"
 import { useCodeMirror } from '@uiw/react-codemirror';
-import { javascript } from '@codemirror/lang-javascript'
-import { oneDark } from '@codemirror/theme-one-dark';
+import { poetic } from './extended/theme'
 
 import './Editor.css'
 
 const MyEditor = () => {
 
+  const handleChange = (e) => {
+    console.log(e)
+  }
+
   const editor = useRef();
   const { setContainer } = useCodeMirror({
     container: editor.current,
-    extensions: [javascript()],
     value: '',
-    theme: oneDark,
+    theme: poetic,
     autoFocus: true,
     minHeight: 200,
-    height: 200
+    height: 200,
+    onChange: handleChange
   });
 
   useEffect(() => {

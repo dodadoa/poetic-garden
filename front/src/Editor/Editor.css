@@ -3,38 +3,9 @@
     height: calc(100% - 5em);
     cursor: text;
     width: 50em;
-    color: rgb(159, 204, 56);
+    color: #9fcc38;
     padding: 1em;
     font-size: 20px;
     font-weight: 200;
     font-family: "Croissant One", cursive;
-}
-
-.cm-editor {
-    background: transparent;
-}
-
-.ͼ1.cm-editor.cm-focused {
-    outline: none;
-}
-
-.cm-line {
-    background: transparent;
-    font-family: "Croissant One", cursive !important;
-}
-
-.cm-gutters {
-    display: none;
-}
-
-.ͼo .cm-gutters {
-    display: none;
-}
-
-.cm-activeLine {
-    background: transparent;
-}
-
-.ͼo .cm-activeLine {
-    background: transparent;
 }

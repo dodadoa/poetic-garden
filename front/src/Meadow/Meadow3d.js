@@ -114,6 +114,7 @@ const Meadow = ({
   const { bW, bH, joints } = options
   const materialRef = useRef()
   const [texture, alphaMap] = useLoader(THREE.TextureLoader, [bladeDiffuse, bladeAlpha])
+
   const attributeData = useMemo(() => getAttributeData(instances, width), [instances, width])
   const baseGeom = useMemo(() => new THREE.PlaneBufferGeometry(bW, bH, 1, joints).translate(0, bH / 2, 0), [options])
   const groundGeo = useMemo(() => {
@@ -124,8 +125,10 @@ const Meadow = ({
       const v = geo.vertices[i]
       v.y = getYPosition(v.x, v.z)
     }
+
     geo.computeVertexNormals()
     return geo.toBufferGeometry()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width])
 
   useFrame((state) => (materialRef.current.uniforms.time.value = state.clock.elapsedTime / 4))

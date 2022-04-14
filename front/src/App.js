@@ -6,7 +6,7 @@ import Canvas3d from './Canvas3d'
 import './App.css'
 
 function App() {
-  const [message, setMessage] = useState("")
+  const [oscStatus, setOscStatus] = useState("")
 
   useEffect(() => {
     const oscPort = new osc.WebSocketPort({
@@ -16,13 +16,13 @@ function App() {
     oscPort.open()
     oscPort.on("message", function (oscMsg) {
       console.log(oscMsg)
-      setMessage(oscMsg.args[0].value)
+      setOscStatus(oscMsg.args[0].value)
     });
   }, [])
 
   return (
     <div className="App">
-      {message}
+      <p style={{ position: "fixed", top: '0px', left: '10px', color: "#45542f" }}>{oscStatus}</p>
       <Canvas3d />
       <Editor />
     </div>
