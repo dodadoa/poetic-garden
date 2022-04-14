@@ -7,6 +7,7 @@
     padding: 1em;
     font-size: 20px;
     font-weight: 200;
+    font-family: "Croissant One", cursive;
 }
 
 .cm-editor {
@@ -19,6 +20,7 @@
 
 .cm-line {
     background: transparent;
+    font-family: "Croissant One", cursive !important;
 }
 
 .cm-gutters {

@@ -6,11 +6,11 @@ import './Canvas3d.css'
 export default function Canvas3d() {
   return (
     <div className="canvas-container">
-      <Canvas camera={{ position: [15, 15, 15] }}>
+      <Canvas camera={{ position: [15, 15, 10] }}>
         <ambientLight />
         <pointLight position={[10, 10, 10]} />
         <Suspense fallback={null}>
-          <Meadow3d position={[-1, 0, 0]} />
+          <Meadow3d />
         </Suspense>
       </Canvas>
     </div>

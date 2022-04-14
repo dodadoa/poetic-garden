@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import Editor from './Editor'
+import osc from 'osc/dist/osc-browser.min.js'
+
+import Editor from './Editor/Editor'
 import Canvas3d from './Canvas3d'
 import './App.css'
-import osc from 'osc/dist/osc-browser.min.js'
 
 function App() {
   const [message, setMessage] = useState("")
