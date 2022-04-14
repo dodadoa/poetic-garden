@@ -1,3 +1,4 @@
+// Based on https://codesandbox.io/s/grass-shader-5xho4 by Paul Henschel
 // Based on https://codepen.io/al-ro/pen/jJJygQ by al-ro, but rewritten in react-three-fiber
 import * as THREE from "three"
 import React, { useRef, useMemo } from "react"
@@ -142,7 +143,7 @@ const Meadow = ({
         <grassMaterial ref={materialRef} map={texture} alphaMap={alphaMap} toneMapped={false} />
       </mesh>
       <mesh position={[0, 0, 0]} geometry={groundGeo}>
-        <meshStandardMaterial color="#0ff" />
+        <meshStandardMaterial color="#000f00" />
       </mesh>
     </group>
   )

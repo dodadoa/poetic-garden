@@ -7,7 +7,7 @@
     "@codemirror/theme-one-dark": "^0.19.1",
     "@fontsource/croissant-one": "^4.5.5",
     "@react-three/drei": "^9.4.2",
-    "@react-three/fiber": "^8.0.10",
+    "@react-three/fiber": "^7.0.26",
     "@uiw/react-codemirror": "^4.6.0",
     "draft-js": "^0.11.7",
     "draft-js-prism": "^1.0.6",
@@ -19,7 +19,7 @@
     "react-scripts": "5.0.0",
     "rita": "^2.8.1",
     "simplex-noise": "^3.0.1",
-    "three": "^0.139.2",
+    "three": "^0.137",
     "web-vitals": "^2.1.2"
   },
   "scripts": {
