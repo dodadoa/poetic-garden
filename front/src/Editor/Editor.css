@@ -2,4 +2,6 @@
     height: calc(100% - 5em);
     width: 50em;
     padding: 1em;
+    z-index: 1;
+    border: 2px solid hsla(78, 69%, 39%, 0.1);
 }
