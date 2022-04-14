@@ -7,7 +7,6 @@ export default function Canvas3d() {
   return (
     <div className="canvas-container">
       <Canvas camera={{ position: [10, 5, 50] }}>
-        <ambientLight />
         <Suspense fallback={null}>
           <Meadow3d />
         </Suspense>

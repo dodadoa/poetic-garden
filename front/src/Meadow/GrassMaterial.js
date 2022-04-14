@@ -4,11 +4,11 @@ import { extend } from "@react-three/fiber"
 
 const GrassMaterial = shaderMaterial(
   {
-    bladeHeight: 1,
+    bladeHeight: 2,
     map: null,
     alphaMap: null,
     time: 0,
-    tipColor: new THREE.Color(0.0, 0.6, 0.0).convertSRGBToLinear(),
+    tipColor: new THREE.Color(0.0, 0.0, 0.0).convertSRGBToLinear(),
     bottomColor: new THREE.Color(0.0, 0.1, 0.0).convertSRGBToLinear(),
   },
   `   precision mediump float;
@@ -73,10 +73,13 @@ const GrassMaterial = shaderMaterial(
       void main() {
         //Relative position of vertex along the mesh Y direction
         frc = position.y/float(bladeHeight);
+
         //Get wind data from simplex noise 
         float noise = 1.0-(snoise(vec2((time-offset.x/50.0), (time-offset.z/50.0)))); 
+
         //Define the direction of an unbent blade of grass rotated around the Y axis
         vec4 direction = vec4(0.0, halfRootAngleSin, 0.0, halfRootAngleCos);
+        
         //Interpolate between the unbent direction and the direction of growth calculated on the CPU. 
         //Using the relative location of the vertex along the Y axis as the weight, we get a smooth bend
         direction = slerp(direction, orientation, frc);
@@ -103,12 +106,16 @@ const GrassMaterial = shaderMaterial(
       void main() {
         //Get transparency information from alpha map
         float alpha = texture2D(alphaMap, vUv).r;
+
         //If transparent, don't draw
         if(alpha < 0.15) discard;
+
         //Get colour data from texture
         vec4 col = vec4(texture2D(map, vUv));
+
         //Add more green towards root
         col = mix(vec4(tipColor, 1.0), col, frc);
+        
         //Add a shadow towards root
         col = mix(vec4(bottomColor, 1.0), col, frc);
         gl_FragColor = col;
