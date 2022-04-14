@@ -1,5 +1,4 @@
 import { EditorView } from "@codemirror/view"
-import { Extension } from "@codemirror/state"
 
 const COLOR = {
   transparent: "transparent",

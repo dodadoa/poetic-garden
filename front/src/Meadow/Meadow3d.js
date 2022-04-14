@@ -132,7 +132,9 @@ const Meadow = ({
   }, [width])
 
   useFrame((state) => (materialRef.current.uniforms.time.value = state.clock.elapsedTime / 4))
-
+  useFrame(state => {
+    state.camera.rotateX((Math.cos(state.clock.elapsedTime) / 2000))
+  })
   return (
     <group {...props}>
       <mesh>
