@@ -3,6 +3,7 @@ import osc from 'osc/dist/osc-browser.min.js'
 
 import Editor from './Editor/Editor'
 import Canvas3d from './Canvas3d'
+import P5Canvas from './P5Canvas'
 import './App.css'
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
   return (
     <div className="App">
       <p style={{ position: "fixed", top: '0px', left: '10px', color: "#45542f" }}>{oscStatus}</p>
+      <P5Canvas />
       <Canvas3d />
       <Editor />
     </div>

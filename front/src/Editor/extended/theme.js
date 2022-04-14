@@ -10,6 +10,7 @@ export const poetic = EditorView.theme({
     color: COLOR.green,
     backgroundColor: COLOR.transparent,
     fontFamily: "Croissant One",
+    fontSize: "16px"
   },
   ".cm-gutters": {
     display: "none"
