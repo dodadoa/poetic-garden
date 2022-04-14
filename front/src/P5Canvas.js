@@ -2,8 +2,6 @@ import React from "react";
 import Sketch from "react-p5";
 import './P5Canvas.css'
 
-const fireFlies = [];
-
 class FireFly {
   constructor(pos, r, v, p5context) {
     this.p5 = p5context
@@ -12,14 +10,6 @@ class FireFly {
     this.vel = this.p5.createVector(this.p5.random(-this.offset, this.offset), this.p5.random(-1, 1))
     this.acc = this.p5.createVector()
     this.r = r
-    this.col = {
-      h: null,
-      s: null,
-      b: null,
-      a: 1
-    }
-
-    this.rot = 0;
   }
 
   update() {
@@ -33,9 +23,8 @@ class FireFly {
     this.p5.push();
     this.p5.blendMode(this.p5.ADD);
     this.p5.noStroke();
-
     for (let i = 0; i < 1; i += 0.1) {
-      this.p5.fill(this.p5.frameCount % 360, 0.9, i, 0.7 - i);
+      this.p5.fill(this.p5.frameCount % 1000, 0.9, i, 0.7 - i)
       this.p5.ellipse(this.pos.x, this.pos.y, this.r * i);
     }
     this.p5.pop();
@@ -54,18 +43,21 @@ class FireFly {
     return this.update().display().bounds();
   }
 }
+const fireFlies = [];
 
 const P5Canvas = (props) => {
   const setup = (p5, canvasParentRef) => {
+    p5.colorMode(p5.HSL, 360, 3, 2, 1);
     p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef)
     for (let i = 0; i < 100; i++) {
       fireFlies.push(
-        new FireFly({
-          x: p5.random(p5.width),
-          y: p5.random(p5.height)
-        },
-          5 * i,
-          1,
+        new FireFly(
+          {
+            x: p5.random(p5.width),
+            y: p5.random(p5.height)
+          },
+          i / 3,
+          2,
           p5
         )
       );
@@ -73,8 +65,8 @@ const P5Canvas = (props) => {
   }
 
   const draw = (p5) => {
-    p5.background('rgba(0%,0%,0%,0.0)');
-    fireFlies.forEach(firefly => {
+    p5.background('rgba(0%,4%,0%,1.0)');
+    fireFlies.forEach((firefly, i) => {
       firefly.render()
     });
   }

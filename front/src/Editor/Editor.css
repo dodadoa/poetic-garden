@@ -1,11 +1,5 @@
 .editor-container {
-    border: 2px solid hsla(78, 59%, 51%, 0.1);
     height: calc(100% - 5em);
-    cursor: text;
     width: 50em;
-    color: #9fcc38;
     padding: 1em;
-    font-size: 20px;
-    font-weight: 200;
-    font-family: "Croissant One", cursive;
 }
