@@ -43,6 +43,7 @@ class FireFly {
     return this.update().display().bounds();
   }
 }
+
 const fireFlies = [];
 
 const P5Canvas = (props) => {
@@ -62,6 +63,7 @@ const P5Canvas = (props) => {
         )
       );
     }
+    console.log(p5)
   }
 
   const draw = (p5) => {
