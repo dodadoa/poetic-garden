@@ -7,7 +7,7 @@ import P5Canvas from './P5Canvas'
 import './App.css'
 
 function App() {
-  const [oscStatus, setOscStatus] = useState("")
+  const [oscMessage, setOscMessage] = useState("")
 
   useEffect(() => {
     const oscPort = new osc.WebSocketPort({
@@ -17,15 +17,15 @@ function App() {
     oscPort.open()
     oscPort.on("message", function (oscMsg) {
       console.log(oscMsg)
-      setOscStatus(oscMsg.args[0].value)
+      setOscMessage(oscMsg.args[0].value)
     });
   }, [])
 
   return (
     <div className="App">
-      <p style={{ position: "fixed", top: '0px', left: '10px', color: "#45542f" }}>{oscStatus}</p>
-      <P5Canvas />
-      <Canvas3d />
+      <p style={{ position: "fixed", top: '0px', left: '10px', color: "#45542f" }}>{oscMessage}</p>
+      <P5Canvas oscValue={oscMessage} />
+      <Canvas3d oscValue={oscMessage} />
       <Editor />
     </div>
   );

@@ -12,6 +12,9 @@ export const poetic = EditorView.theme({
     fontFamily: "Croissant One",
     fontSize: "16px"
   },
+  "&.ͼ1.cm-editor": {
+    zIndex: "2"
+  },
   ".cm-gutters": {
     display: "none"
   },

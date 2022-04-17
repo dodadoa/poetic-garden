@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import Meadow3d from './Meadow/Meadow3d'
 import './Canvas3d.css'
 
-export default function Canvas3d() {
+const Canvas3d = (props) => {
   return (
     <div className="canvas-container">
       <Canvas camera={{ position: [10, 5, 50] }}>
@@ -14,3 +14,5 @@ export default function Canvas3d() {
     </div>
   )
 }
+
+export default Canvas3d

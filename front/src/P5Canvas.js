@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import Sketch from "react-p5";
 import './P5Canvas.css'
 
@@ -45,8 +45,27 @@ class FireFly {
 }
 
 const fireFlies = [];
+let newComingValue = false
+
+const usePrevious = (value) => {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
 
 const P5Canvas = (props) => {
+
+  const { oscValue } = props
+  const prev = usePrevious(oscValue);
+
+  useEffect(() => {
+    if (prev !== oscValue) {
+      newComingValue = true
+    }
+  }, [oscValue, prev])
+
   const setup = (p5, canvasParentRef) => {
     p5.colorMode(p5.HSL, 360, 3, 2, 1);
     p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef)
@@ -58,19 +77,38 @@ const P5Canvas = (props) => {
             y: p5.random(p5.height)
           },
           i / 3,
-          2,
+          p5.random(100),
           p5
         )
       );
     }
-    console.log(p5)
   }
 
   const draw = (p5) => {
     p5.background('rgba(0%,4%,0%,1.0)');
+    p5.colorMode(p5.HSL, 360, 3, 2, 1);
     fireFlies.forEach((firefly, i) => {
       firefly.render()
     });
+
+    if (Number.parseFloat(props.oscValue) > 0.5 && newComingValue) {
+      console.log('adding new fireFly')
+      fireFlies.push(
+        new FireFly(
+          {
+            x: p5.random(p5.width),
+            y: p5.random(p5.height - 200)
+          },
+          100,
+          5,
+          p5
+        )
+      );
+      newComingValue = false
+    } else if (Number.parseFloat(props.oscValue) <= 0.5 && newComingValue) {
+      fireFlies.splice(-1, 1)
+      newComingValue = false
+    }
   }
 
   return (
