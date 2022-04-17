@@ -1,3 +1,4 @@
+// adapt from https://editor.p5js.org/slow_izzm/sketches/AzyByxCgt
 class FireFly {
     constructor(pos, r, v, p5context) {
         this.p5 = p5context
