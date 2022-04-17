@@ -10,7 +10,7 @@ const MyEditor = (props) => {
   const editor = useRef();
   const { setContainer } = useCodeMirror({
     container: editor.current,
-    value: '',
+    value: props.code || '',
     theme: poetic,
     autoFocus: true,
     minHeight: 200,

@@ -10,7 +10,7 @@ export const poetic = EditorView.theme({
     color: COLOR.green,
     backgroundColor: COLOR.transparent,
     fontFamily: "Croissant One",
-    fontSize: "16px"
+    fontSize: "24px"
   },
   "&.ͼ1.cm-editor": {
     zIndex: "2"

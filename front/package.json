@@ -13,6 +13,7 @@
     "@react-three/drei": "^9.4.2",
     "@react-three/fiber": "^7.0.26",
     "@uiw/react-codemirror": "^4.6.0",
+    "@use-it/event-listener": "^0.1.7",
     "draft-js": "^0.11.7",
     "draft-js-prism": "^1.0.6",
     "ml5": "^0.12.1",
