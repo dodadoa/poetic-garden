@@ -1,25 +1,11 @@
-import React, { useRef, useEffect, useState } from "react"
+import React, { useRef, useEffect } from "react"
 import { useCodeMirror } from '@uiw/react-codemirror'
-import RiTa from 'rita'
-import ml5 from 'ml5'
+
 import { poetic } from './extended/theme'
 
 import './Editor.css'
 
-const MyEditor = () => {
-
-  const [sentimentModel, setSentimentModel] = useState(null)
-
-  const modelReady = () => {
-    console.log('model ready')
-  }
-
-  const handleChange = (text) => {
-    const analyzed = RiTa.analyze(text);
-    const prediction = sentimentModel.predict(text)
-
-    console.log(analyzed, prediction)
-  }
+const MyEditor = (props) => {
 
   const editor = useRef();
   const { setContainer } = useCodeMirror({
@@ -29,17 +15,8 @@ const MyEditor = () => {
     autoFocus: true,
     minHeight: 200,
     height: 200,
-    onChange: handleChange
+    onChange: props.handleChange
   });
-
-  useEffect(() => {
-    const loadMl5 = async () => {
-      const sentiment = await ml5.sentiment('movieReviews', modelReady);
-      setSentimentModel(sentiment)
-    }
-
-    loadMl5()
-  }, [])
 
   useEffect(() => {
     if (editor.current) {

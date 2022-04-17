@@ -1,48 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import Sketch from "react-p5";
 import './P5Canvas.css'
-
-class FireFly {
-  constructor(pos, r, v, p5context) {
-    this.p5 = p5context
-    this.offset = ((r / v) / 40)
-    this.pos = this.p5.createVector(pos.x, pos.y)
-    this.vel = this.p5.createVector(this.p5.random(-this.offset, this.offset), this.p5.random(-1, 1))
-    this.acc = this.p5.createVector()
-    this.r = r
-  }
-
-  update() {
-    this.vel.add(this.acc);
-    this.pos.add(this.vel);
-
-    return this;
-  }
-
-  display() {
-    this.p5.push();
-    this.p5.blendMode(this.p5.ADD);
-    this.p5.noStroke();
-    for (let i = 0; i < 1; i += 0.1) {
-      this.p5.fill(this.p5.frameCount % 1000, 0.9, i, 0.7 - i)
-      this.p5.ellipse(this.pos.x, this.pos.y, this.r * i);
-    }
-    this.p5.pop();
-
-    return this;
-  }
-
-  bounds() {
-    if (this.pos.x <= 0 || this.pos.x >= this.p5.width) this.vel.x *= -1;
-    if (this.pos.y <= 0 || this.pos.y >= this.p5.width) this.vel.y *= -1;
-
-    return this;
-  }
-
-  render() {
-    return this.update().display().bounds();
-  }
-}
+import FireFly from "./FireFly";
 
 const fireFlies = [];
 let newComingValue = false
@@ -57,14 +16,15 @@ const usePrevious = (value) => {
 
 const P5Canvas = (props) => {
 
-  const { oscValue } = props
-  const prev = usePrevious(oscValue);
+  const { oscValue, sentimentScore } = props
+  const prevOscValue = usePrevious(oscValue);
+  const prevSentimentScore = usePrevious(sentimentScore)
 
   useEffect(() => {
-    if (prev !== oscValue) {
+    if (prevOscValue !== oscValue || prevSentimentScore !== sentimentScore) {
       newComingValue = true
     }
-  }, [oscValue, prev])
+  }, [oscValue, sentimentScore, prevOscValue, prevSentimentScore])
 
   const setup = (p5, canvasParentRef) => {
     p5.colorMode(p5.HSL, 360, 3, 2, 1);
@@ -87,6 +47,7 @@ const P5Canvas = (props) => {
   const draw = (p5) => {
     p5.background('rgba(0%,4%,0%,1.0)');
     p5.colorMode(p5.HSL, 360, 3, 2, 1);
+
     fireFlies.forEach((firefly, i) => {
       firefly.render()
     });
@@ -104,10 +65,36 @@ const P5Canvas = (props) => {
           p5
         )
       );
+      p5.background('rgba(0%,4%,0%,1.0)');
       newComingValue = false
     } else if (Number.parseFloat(props.oscValue) <= 0.5 && newComingValue) {
       fireFlies.splice(-1, 1)
+      p5.background('rgba(0%,8%,4%,1.0)');
       newComingValue = false
+    }
+
+    if (sentimentScore <= 0.5 && newComingValue) {
+      console.log('SENTIMENTAL SAD')
+      p5.push();
+      p5.blendMode(p5.ADD);
+      p5.noStroke();
+      for (let i = 0; i < 1; i += 0.01) {
+        p5.fill(p5.frameCount % 300, 1.7, i, 0.7 - i)
+        p5.ellipse(p5.width / 2, p5.height / 2, 1000 * i);
+      }
+      p5.pop();
+      // newComingValue = false
+    } else if (newComingValue) {
+      console.log('SENTIMENTAL GOOD')
+      p5.push();
+      p5.blendMode(p5.ADD);
+      p5.noStroke();
+      for (let i = 0; i < 1; i += 0.01) {
+        p5.fill(p5.frameCount % 300, 0.9, i, 0.7 - i)
+        p5.ellipse(p5.width / 2, p5.height / 2, 1000 * i);
+      }
+      p5.pop();
+      // newComingValue = false
     }
   }
 
