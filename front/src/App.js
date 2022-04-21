@@ -13,7 +13,7 @@ const OPTIONS_KEYS = ['Alt'];
 
 
 function App() {
-  const [oscMessage, setOscMessage] = useState("")
+  const [oscMessage, setOscMessage] = useState("disconnected")
   const [sentimentModel, setSentimentModel] = useState(null)
   const [sentimentScore, setSentimentScore] = useState(0.0)
   const [code, setCode] = useState("")
@@ -78,7 +78,7 @@ function App() {
     setCode(text)
   }
 
-  function handler({ key }) {
+  const handler = ({ key }) => {
     if (OPTIONS_KEYS.includes(String(key))) {
       console.log('Option key pressed!');
       nextWord()
@@ -88,16 +88,19 @@ function App() {
   useEventListener('keydown', handler);
 
   useEffect(() => {
-    const oscPort = new osc.WebSocketPort({
-      url: "ws://localhost:8080",
-      metadata: true
-    });
-    oscPort.open()
-    oscPort.on("message", function (oscMsg) {
-      console.log(oscMsg)
-      setOscMessage(oscMsg.args[0].value)
-    });
+    if (process.env.REACT_APP_LIVE_CODE) {
+      const oscPort = new osc.WebSocketPort({
+        url: "ws://localhost:8080",
+        metadata: true
+      });
+      oscPort.open()
+      oscPort.on("message", function (oscMsg) {
+        console.log(oscMsg)
+        setOscMessage(oscMsg.args[0].value)
+      });
+    }
   }, [])
+
 
   return (
     <div className="App">
