@@ -2,6 +2,7 @@
 
 # dependencies
 front/node_modules
+front/build
 back/node_modules
 tool/node_modules
 
