@@ -3,6 +3,7 @@ import useEventListener from '@use-it/event-listener'
 import osc from 'osc/dist/osc-browser.min.js'
 import RiTa from 'rita'
 import ml5 from 'ml5'
+import * as Tone from 'tone'
 
 import Editor from './Editor/Editor'
 import Canvas3d from './3d/Canvas3d'
@@ -12,13 +13,13 @@ import './App.css'
 const OPTIONS_KEYS = ['Alt'];
 
 
-function App() {
+const App = () => {
   const [oscMessage, setOscMessage] = useState("disconnected")
   const [sentimentModel, setSentimentModel] = useState(null)
   const [sentimentScore, setSentimentScore] = useState(0.0)
   const [code, setCode] = useState("")
 
-  function nextWord() {
+  const nextWord = () => {
     let words = RiTa.tokenize(code);
     let r = Math.floor(Math.random() * words.length);
     console.log(r, words)
@@ -72,10 +73,16 @@ function App() {
   }
 
   const handleChange = (text) => {
-    // const analyzed = RiTa.analyze(text);
+    const analyzed = RiTa.analyze(text);
     const prediction = sentimentModel.predict(text)
     setSentimentScore(prediction.score)
     setCode(text)
+
+    const stresses = analyzed.stresses.split(" ").filter(stress => stress !== "")
+    console.log(stresses)
+
+    // const synth = new Tone.Synth().toDestination();
+    // synth.triggerAttackRelease("C4", "8n");
   }
 
   const handler = ({ key }) => {

@@ -84,7 +84,6 @@ const P5Canvas = (props) => {
     }
 
     if (sentimentScore <= 0.5 && newComingSentimentScore) {
-      console.log('SENTIMENTAL SAD')
       p5.push();
       p5.blendMode(p5.ADD)
       p5.noStroke();
@@ -94,7 +93,6 @@ const P5Canvas = (props) => {
       }
       p5.pop();
     } else if (sentimentScore > 0.5 && newComingSentimentScore) {
-      console.log('SENTIMENTAL GOOD')
       p5.push();
       p5.blendMode(p5.ADD)
       p5.noStroke();
