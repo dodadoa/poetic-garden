@@ -1,5 +1,6 @@
 // Based on https://codesandbox.io/s/grass-shader-5xho4 by Paul Henschel
 // Based on https://codepen.io/al-ro/pen/jJJygQ by al-ro, but rewritten in react-three-fiber
+
 import * as THREE from "three"
 import React, { useRef, useMemo } from "react"
 import SimplexNoise from "simplex-noise"

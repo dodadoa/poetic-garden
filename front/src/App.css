@@ -6,3 +6,20 @@
   width: 100%;
   position: fixed;
 }
+
+.code {
+  width: 120vh;
+  height: 80vh;
+  background-color: transparent;
+  border: 1px solid #8a8a8a67;
+  border-radius: 5px;
+  box-shadow: 0 0 25px #8a8a8a67;
+  outline: none;
+  margin: 1rem;
+  color: #ffb5b5;
+  font-size: 1.5rem;
+  padding: 20px;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  resize: none;
+  line-height: 2rem;
+}

@@ -3,16 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@codemirror/highlight": "^0.19.8",
-    "@codemirror/lang-javascript": "^0.19.7",
-    "@codemirror/language": "^0.19.10",
-    "@codemirror/state": "^0.19.9",
-    "@codemirror/theme-one-dark": "^0.19.1",
-    "@codemirror/view": "^0.19.48",
     "@fontsource/croissant-one": "^4.5.5",
-    "@react-three/drei": "^9.4.2",
-    "@react-three/fiber": "^7.0.26",
-    "@uiw/react-codemirror": "^4.6.0",
+    "@react-three/drei": "^9.83.8",
+    "@react-three/fiber": "^8.0.0",
     "@use-it/event-listener": "^0.1.7",
     "draft-js": "^0.11.7",
     "draft-js-prism": "^1.0.6",
@@ -32,8 +25,8 @@
     "web-vitals": "^2.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "GENERATE_SOURCEMAP=false react-scripts start",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

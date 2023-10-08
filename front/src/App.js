@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import useEventListener from '@use-it/event-listener'
-import osc from 'osc/dist/osc-browser.min.js'
 import RiTa from 'rita'
 import ml5 from 'ml5'
 import * as Tone from 'tone'
 
-import Editor from './Editor/Editor'
 import Canvas3d from './3d/Canvas3d'
 import P5Canvas from './2d/P5Canvas'
 import './App.css'
 
 const OPTIONS_KEYS = ['Alt'];
 
-
 const App = () => {
-  const [oscMessage, setOscMessage] = useState("disconnected")
   const [sentimentModel, setSentimentModel] = useState(null)
   const [sentimentScore, setSentimentScore] = useState(0.0)
   const [code, setCode] = useState("")
@@ -60,17 +56,14 @@ const App = () => {
 
   useEffect(() => {
     const loadMl5 = async () => {
-      const sentiment = await ml5.sentiment('movieReviews', modelReady);
+      const sentiment = await ml5.sentiment('movieReviews', () => console.log('modelReady'));
       setSentimentModel(sentiment)
     }
 
     loadMl5()
   }, [])
 
-
-  const modelReady = () => {
-    console.log('model ready')
-  }
+  
 
   const handleChange = (text) => {
     const analyzed = RiTa.analyze(text);
@@ -81,8 +74,22 @@ const App = () => {
     const stresses = analyzed.stresses.split(" ").filter(stress => stress !== "")
     console.log(stresses)
 
-    // const synth = new Tone.Synth().toDestination();
-    // synth.triggerAttackRelease("C4", "8n");
+    const octave = [3, 4, 5]
+    const key = ["C", "D", "E", "F", "G", "A", "B"]
+    const randomKey = key[Math.floor(Math.random() * key.length)]
+    const randomOctave = octave[Math.floor(Math.random() * octave.length)]
+
+    const reverb = new Tone.Reverb({
+      decay: 10,
+      wet: 0.8,
+      preDelay: 0.01
+    }).toDestination();
+    
+    const synth = new Tone.AMSynth().connect(reverb).toDestination();
+
+    synth.triggerAttack(randomKey + randomOctave);
+    synth.oscillator.type = 'sine3';
+    synth.triggerRelease("+0.2");
   }
 
   const handler = ({ key }) => {
@@ -94,28 +101,18 @@ const App = () => {
 
   useEventListener('keydown', handler);
 
-  useEffect(() => {
-    if (process.env.REACT_APP_LIVE_CODE) {
-      const oscPort = new osc.WebSocketPort({
-        url: "ws://localhost:8080",
-        metadata: true
-      });
-      oscPort.open()
-      oscPort.on("message", function (oscMsg) {
-        console.log(oscMsg)
-        setOscMessage(oscMsg.args[0].value)
-      });
-    }
-  }, [])
-
-
   return (
     <div className="App">
-      <p style={{ position: "fixed", top: '0px', left: '10px', color: "#45542f" }}>{oscMessage}</p>
       <p style={{ position: "fixed", top: '20px', left: '10px', color: "#45542f" }}>{sentimentScore}</p>
-      <P5Canvas oscValue={oscMessage} sentimentScore={sentimentScore} />
-      <Canvas3d oscValue={oscMessage} />
-      <Editor handleChange={handleChange} code={code} />
+      <P5Canvas sentimentScore={sentimentScore} />
+      <Canvas3d />
+      <div style={{ zIndex: 999 }}>
+        <textarea 
+          className='code'
+          onChange={e => handleChange(e.target.value)}
+          value={code}
+        />
+      </div>
     </div>
   );
 }

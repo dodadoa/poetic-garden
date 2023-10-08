@@ -17,21 +17,15 @@ const usePrevious = (value) => {
 
 const P5Canvas = (props) => {
 
-  console.log(props)
-
   const { oscValue, sentimentScore } = props
-  const prevOscValue = usePrevious(oscValue);
   const prevSentimentScore = usePrevious(sentimentScore)
 
   useEffect(() => {
-    if (prevOscValue !== oscValue) {
-      newComingOscValue = true
-    }
 
     if (prevSentimentScore !== sentimentScore) {
       newComingSentimentScore = true
     }
-  }, [oscValue, sentimentScore, prevOscValue, prevSentimentScore])
+  }, [sentimentScore, prevSentimentScore])
 
   const setup = (p5, canvasParentRef) => {
     p5.colorMode(p5.HSL, 360, 3, 2, 1);
