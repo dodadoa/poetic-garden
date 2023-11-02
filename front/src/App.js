@@ -22,6 +22,7 @@ const App = () => {
   const [sentimentModel, setSentimentModel] = useState(null)
   const [sentimentScore, setSentimentScore] = useState(0.0)
   const [code, setCode] = useState("")
+  const [loading, setLoading] = useState(true)
 
   const nextWord = () => {
     let words = RiTa.tokenize(code);
@@ -66,6 +67,7 @@ const App = () => {
     const loadMl5 = async () => {
       const sentiment = await ml5.sentiment('movieReviews', () => console.log('modelReady'));
       setSentimentModel(sentiment)
+      setLoading(false)
     }
 
     loadMl5()
@@ -101,6 +103,24 @@ const App = () => {
   }
 
   useEventListener('keydown', handler);
+
+  if (loading) {
+    return (
+      <div className="App">
+        <p style={{ position: "fixed", top: '20px', left: '10px', color: "#45542f" }}>
+          press the 'Alt' key to mutate the text
+        </p>
+        <p style={{ position: "fixed", top: '40px', left: '10px', color: "#45542f" }}>
+          better to play with sound on
+        </p>
+        <P5Canvas sentimentScore={sentimentScore} />
+        <Canvas3d />
+        <div style={{ position: "absolute", top: '40px', textAlign: 'center', fontSize: "36px" }}>
+          Loading
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="App">
