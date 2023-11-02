@@ -1,15 +1,15 @@
 import React from 'react'
 import { Canvas } from '@react-three/fiber'
-import Meadow3d from './Meadow/Meadow3d'
+import { useTexture } from '@react-three/drei'
+import * as THREE from 'three'
 import './Canvas3d.css'
 
 const Canvas3d = () => {
   return (
     <div className="canvas-container">
-      <Canvas camera={{ position: [10, 5, 50] }}>
+      <Canvas camera={{ position: [0, 0, 30], fov: 45 }}>
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 0]} />
-        <Meadow3d />
       </Canvas>
     </div>
   )
