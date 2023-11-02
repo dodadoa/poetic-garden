@@ -10,6 +10,14 @@ import './App.css'
 
 const OPTIONS_KEYS = ['Alt'];
 
+const reverb = new Tone.Reverb({
+  decay: 10,
+  wet: 0.8,
+  preDelay: 0.01
+}).toDestination();
+
+const synth = new Tone.AMSynth().connect(reverb).toDestination();
+
 const App = () => {
   const [sentimentModel, setSentimentModel] = useState(null)
   const [sentimentScore, setSentimentScore] = useState(0.0)
@@ -63,8 +71,6 @@ const App = () => {
     loadMl5()
   }, [])
 
-  
-
   const handleChange = (text) => {
     const analyzed = RiTa.analyze(text);
     const prediction = sentimentModel.predict(text)
@@ -72,24 +78,7 @@ const App = () => {
     setCode(text)
 
     const stresses = analyzed.stresses.split(" ").filter(stress => stress !== "")
-    console.log(stresses)
-
-    const octave = [3, 4, 5]
-    const key = ["C", "D", "E", "F", "G", "A", "B"]
-    const randomKey = key[Math.floor(Math.random() * key.length)]
-    const randomOctave = octave[Math.floor(Math.random() * octave.length)]
-
-    const reverb = new Tone.Reverb({
-      decay: 10,
-      wet: 0.8,
-      preDelay: 0.01
-    }).toDestination();
-    
-    const synth = new Tone.AMSynth().connect(reverb).toDestination();
-
-    synth.triggerAttack(randomKey + randomOctave);
-    synth.oscillator.type = 'sine3';
-    synth.triggerRelease("+0.2");
+    console.log(stresses)   
   }
 
   const handler = ({ key }) => {
@@ -97,13 +86,27 @@ const App = () => {
       console.log('Option key pressed!');
       nextWord()
     }
+
+    console.log(key)
+    if (key === 'Spacebar' || key === ' ' || key === 'Enter') {
+      const octave = [3, 4, 5]
+      const key = ["C", "D", "E", "F", "G", "A", "B"]
+      const randomKey = key[Math.floor(Math.random() * key.length)]
+      const randomOctave = octave[Math.floor(Math.random() * octave.length)]
+      
+      synth.triggerAttack(randomKey + randomOctave);
+      synth.oscillator.type = 'sine3';
+      synth.triggerRelease("+3");
+    }
   }
 
   useEventListener('keydown', handler);
 
   return (
     <div className="App">
-      <p style={{ position: "fixed", top: '20px', left: '10px', color: "#45542f" }}>{sentimentScore}</p>
+      <p style={{ position: "fixed", top: '20px', left: '10px', color: "#45542f" }}>
+        press the 'Alt' key to mutate the text
+      </p>
       <P5Canvas sentimentScore={sentimentScore} />
       <Canvas3d />
       <div style={{ zIndex: 999 }}>
