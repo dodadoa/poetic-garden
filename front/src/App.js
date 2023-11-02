@@ -117,8 +117,8 @@ const App = () => {
         </p>
         <P5Canvas sentimentScore={sentimentScore} />
         <Canvas3d />
-        <div style={{ position: "absolute", top: '40px', textAlign: 'center', fontSize: "36px" }}>
-          Loading
+        <div style={{ position: "absolute", top: '40px', textAlign: 'center', fontSize: "36px", color: "white" }}>
+          Loading...
         </div>
       </div>
     )
