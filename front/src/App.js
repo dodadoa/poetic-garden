@@ -65,9 +65,11 @@ const App = () => {
 
   useEffect(() => {
     const loadMl5 = async () => {
-      const sentiment = await ml5.sentiment('movieReviews', () => console.log('modelReady'));
+      const sentiment = await ml5.sentiment('movieReviews', () => {
+        console.log('modelReady')
+        setLoading(false)
+      });
       setSentimentModel(sentiment)
-      setLoading(false)
     }
 
     loadMl5()
