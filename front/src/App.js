@@ -107,6 +107,9 @@ const App = () => {
       <p style={{ position: "fixed", top: '20px', left: '10px', color: "#45542f" }}>
         press the 'Alt' key to mutate the text
       </p>
+      <p style={{ position: "fixed", top: '40px', left: '10px', color: "#45542f" }}>
+        better to play with sound on
+      </p>
       <P5Canvas sentimentScore={sentimentScore} />
       <Canvas3d />
       <div style={{ zIndex: 999 }}>

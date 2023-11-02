@@ -7,7 +7,8 @@ const Canvas3d = () => {
   return (
     <div className="canvas-container">
       <Canvas camera={{ position: [10, 5, 50] }}>
-        <pointLight position={[10, 10, 10]} />
+        <ambientLight intensity={0.5} />
+        <pointLight position={[10, 10, 0]} />
         <Meadow3d />
       </Canvas>
     </div>

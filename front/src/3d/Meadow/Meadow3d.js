@@ -5,10 +5,10 @@ import * as THREE from "three"
 import React, { useRef, useMemo } from "react"
 import SimplexNoise from "simplex-noise"
 import { useFrame, useLoader } from "@react-three/fiber"
-import { Geometry } from "three/examples/jsm/deprecated/Geometry"
 //These have been taken from "Realistic real-time grass rendering" by Eddie Lee, 2010
 import bladeDiffuse from "./resources/blade_diffuse.jpg"
 import bladeAlpha from "./resources/blade_alpha.jpg"
+import { Geometry } from "three/examples/jsm/deprecated/Geometry"
 import "./GrassMaterial"
 
 const multiplyQuaternions = (q1, q2) => {
@@ -126,10 +126,8 @@ const Meadow = ({
       const v = geo.vertices[i]
       v.y = getYPosition(v.x, v.z)
     }
-
     geo.computeVertexNormals()
     return geo.toBufferGeometry()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width])
 
   useFrame((state) => (materialRef.current.uniforms.time.value = state.clock.elapsedTime / 4))
@@ -140,11 +138,11 @@ const Meadow = ({
     <group {...props}>
       <mesh>
         <instancedBufferGeometry index={baseGeom.index} attributes-position={baseGeom.attributes.position} attributes-uv={baseGeom.attributes.uv}>
-          <instancedBufferAttribute attachObject={["attributes", "offset"]} args={[new Float32Array(attributeData.offsets), 3]} />
-          <instancedBufferAttribute attachObject={["attributes", "orientation"]} args={[new Float32Array(attributeData.orientations), 4]} />
-          <instancedBufferAttribute attachObject={["attributes", "stretch"]} args={[new Float32Array(attributeData.stretches), 1]} />
-          <instancedBufferAttribute attachObject={["attributes", "halfRootAngleSin"]} args={[new Float32Array(attributeData.halfRootAngleSin), 1]} />
-          <instancedBufferAttribute attachObject={["attributes", "halfRootAngleCos"]} args={[new Float32Array(attributeData.halfRootAngleCos), 1]} />
+          <instancedBufferAttribute attachObject={"attributes-offset"} args={[new Float32Array(attributeData.offsets), 3]} />
+          <instancedBufferAttribute attachObject={"attributes-orientation"} args={[new Float32Array(attributeData.orientations), 4]} />
+          <instancedBufferAttribute attachObject={"attributes-stretch"} args={[new Float32Array(attributeData.stretches), 1]} />
+          <instancedBufferAttribute attachObject={"attributes-halfRootAngleSin"} args={[new Float32Array(attributeData.halfRootAngleSin), 1]} />
+          <instancedBufferAttribute attachObject={"attributes-halfRootAngleCos"} args={[new Float32Array(attributeData.halfRootAngleCos), 1]} />
         </instancedBufferGeometry>
         <grassMaterial ref={materialRef} map={texture} alphaMap={alphaMap} toneMapped={false} />
       </mesh>
