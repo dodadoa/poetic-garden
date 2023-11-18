@@ -82,8 +82,8 @@ const P5Canvas = (props) => {
       p5.blendMode(p5.ADD)
       p5.noStroke();
       for (let i = 0; i < 1; i += 0.01) {
-        p5.fill(p5.frameCount % 300, 1.7, i * 0.1, 0.7 - i)
-        p5.ellipse(p5.width / 2, p5.height / 2, 1000 * i);
+        p5.fill(p5.frameCount % 300, 0.9, i * 0.3, 0.7 - i)
+        p5.ellipse(p5.width / 2, p5.height / 2, 300 * i);
       }
       p5.pop();
     } else if (sentimentScore > 0.5 && newComingSentimentScore) {
@@ -91,8 +91,8 @@ const P5Canvas = (props) => {
       p5.blendMode(p5.ADD)
       p5.noStroke();
       for (let i = 0; i < 1; i += 0.01) {
-        p5.fill(p5.frameCount % 300, 0.9, i * 0.5, 0.7 - i)
-        p5.ellipse(p5.width / 2, p5.height / 2, 1000 * i);
+        p5.fill(p5.frameCount % 300, 0.4, i * 0.4, 0.7 - i)
+        p5.ellipse(p5.width / 2, p5.height / 2, 300 * i);
       }
       p5.pop();
     }

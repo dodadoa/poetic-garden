@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import useEventListener from '@use-it/event-listener'
+import { WithContext as ReactTags } from 'react-tag-input';
 import RiTa from 'rita'
 import ml5 from 'ml5'
 import * as Tone from 'tone'
@@ -9,6 +10,13 @@ import P5Canvas from './2d/P5Canvas'
 import './App.css'
 
 const OPTIONS_KEYS = ['Alt'];
+
+const KeyCodes = {
+  comma: 188,
+  enter: 13
+};
+
+const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
 const reverb = new Tone.Reverb({
   decay: 10,
@@ -21,11 +29,24 @@ const synth = new Tone.AMSynth().connect(reverb).toDestination();
 const App = () => {
   const [sentimentModel, setSentimentModel] = useState(null)
   const [sentimentScore, setSentimentScore] = useState(0.0)
-  const [code, setCode] = useState("")
+  const [poem, setPoem] = useState("")
   const [loading, setLoading] = useState(true)
+  const [tags, setTags] = useState([])
+
+  const handleDelete = i => {
+    setTags(tags.filter((tag, index) => index !== i));
+  };
+
+  const handleAddition = tag => {
+    setTags([...tags, tag]);
+  };
+
+  const handleTagClick = index => {
+    console.log('The tag at index ' + index + ' was clicked');
+  };
 
   const nextWord = () => {
-    let words = RiTa.tokenize(code);
+    let words = RiTa.tokenize(poem);
     let r = Math.floor(Math.random() * words.length);
     console.log(r, words)
     for (let i = r; i < words.length + r; i++) {
@@ -60,7 +81,7 @@ const App = () => {
       break;
     }
 
-    setCode(RiTa.untokenize(words))
+    setPoem(RiTa.untokenize(words))
   }
 
   useEffect(() => {
@@ -79,7 +100,7 @@ const App = () => {
     const analyzed = RiTa.analyze(text);
     const prediction = sentimentModel.predict(text)
     setSentimentScore(prediction.score)
-    setCode(text)
+    setPoem(text)
 
     const stresses = analyzed.stresses.split(" ").filter(stress => stress !== "")
     console.log(stresses)   
@@ -135,11 +156,24 @@ const App = () => {
       <P5Canvas sentimentScore={sentimentScore} />
       <Canvas3d />
       <div style={{ zIndex: 999 }}>
-        <textarea 
+        <ReactTags
+          tags={tags}
+          // suggestions={suggestions}
+          delimiters={delimiters}
+          handleDelete={handleDelete}
+          handleAddition={handleAddition}
+          // handleDrag={handleDrag}
+          handleTagClick={handleTagClick}
+          inputFieldPosition="bottom"
+          classNames={{
+            tagInput: 'code'
+          }}
+        />
+        {/* <textarea 
           className='code'
           onChange={e => handleChange(e.target.value)}
-          value={code}
-        />
+          value={poem}
+        /> */}
       </div>
     </div>
   );
