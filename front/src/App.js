@@ -1,22 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Fragment } from 'react'
 import useEventListener from '@use-it/event-listener'
-import { WithContext as ReactTags } from 'react-tag-input';
 import RiTa from 'rita'
 import ml5 from 'ml5'
 import * as Tone from 'tone'
-
 import Canvas3d from './3d/Canvas3d'
 import P5Canvas from './2d/P5Canvas'
+import { Popover, Transition } from '@headlessui/react'
+
 import './App.css'
 
 const OPTIONS_KEYS = ['Alt'];
-
-const KeyCodes = {
-  comma: 188,
-  enter: 13
-};
-
-const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
 const reverb = new Tone.Reverb({
   decay: 10,
@@ -29,37 +22,22 @@ const synth = new Tone.AMSynth().connect(reverb).toDestination();
 const App = () => {
   const [sentimentModel, setSentimentModel] = useState(null)
   const [sentimentScore, setSentimentScore] = useState(0.0)
-  const [poem, setPoem] = useState("")
   const [loading, setLoading] = useState(true)
-  const [tags, setTags] = useState([])
-
-  const handleDelete = i => {
-    setTags(tags.filter((tag, index) => index !== i));
-  };
-
-  const handleAddition = tag => {
-    setTags([...tags, tag]);
-  };
-
-  const handleTagClick = index => {
-    console.log('The tag at index ' + index + ' was clicked');
-  };
+  const [poem, setPoem] = useState('')
 
   const nextWord = () => {
     let words = RiTa.tokenize(poem);
-    let r = Math.floor(Math.random() * words.length);
-    console.log(r, words)
+    const r = Math.floor(Math.random() * words.length);
     for (let i = r; i < words.length + r; i++) {
-
-      let idx = i % words.length;
-      let word = words[idx].toLowerCase();
+      const idx = i % words.length;
+      const word = words[idx].toLowerCase();
       if (word.length < 3) continue;
 
-      let pos = RiTa.tagger.allTags(word)[0];
-      let rhymes = RiTa.rhymes(word, { pos });
-      let sounds = RiTa.soundsLike(word, { pos });
-      let spells = RiTa.spellsLike(word, { pos });
-      let similars = [...rhymes, ...sounds, ...spells];
+      const pos = RiTa.tagger.allTags(word)[0];
+      const rhymes = RiTa.rhymes(word, { pos });
+      const sounds = RiTa.soundsLike(word, { pos });
+      const spells = RiTa.spellsLike(word, { pos });
+      const similars = [...rhymes, ...sounds, ...spells];
 
       if (similars.length < 2) {
         console.log("No sims for " + word);
@@ -71,16 +49,14 @@ const App = () => {
       if (next.includes(word) || word.includes(next)) {
         continue;
       }
+
       if (/[A-Z]/.test(words[idx][0])) {
         next = RiTa.capitalize(next);
       }
 
-      console.log("replace(" + idx + "): " + word + " -> " + next);
-
       words[idx] = next;
       break;
     }
-
     setPoem(RiTa.untokenize(words))
   }
 
@@ -96,40 +72,28 @@ const App = () => {
     loadMl5()
   }, [])
 
-  const handleChange = (text) => {
-    const analyzed = RiTa.analyze(text);
-    const prediction = sentimentModel.predict(text)
-    setSentimentScore(prediction.score)
-    setPoem(text)
-
-    const stresses = analyzed.stresses.split(" ").filter(stress => stress !== "")
-    console.log(stresses)   
-  }
-
   const handler = ({ key }) => {
     if (OPTIONS_KEYS.includes(String(key))) {
-      console.log('Option key pressed!');
       nextWord()
     }
 
-    console.log(key)
-    if (key === 'Spacebar' || key === ' ' || key === 'Enter') {
-      const octave = [3, 4, 5]
-      const key = ["C", "D", "E", "F", "G", "A", "B"]
-      const randomKey = key[Math.floor(Math.random() * key.length)]
-      const randomOctave = octave[Math.floor(Math.random() * octave.length)]
+    // if (key === 'Spacebar' || key === ' ' || key === 'Enter') {
+    //   const octave = [3, 4, 5]
+    //   const key = ["C", "D", "E", "F", "G", "A", "B"]
+    //   const randomKey = key[Math.floor(Math.random() * key.length)]
+    //   const randomOctave = octave[Math.floor(Math.random() * octave.length)]
       
-      synth.triggerAttack(randomKey + randomOctave);
-      synth.oscillator.type = 'sine3';
-      synth.triggerRelease("+3");
-    }
+    //   synth.triggerAttack(randomKey + randomOctave);
+    //   synth.oscillator.type = 'sine3';
+    //   synth.triggerRelease("+3");
+    // }
   }
 
   useEventListener('keydown', handler);
 
   if (loading) {
     return (
-      <div className="App">
+      <div className="fixed w-full h-full p-8 flex justify-center bg-white">
         <p style={{ position: "fixed", top: '20px', left: '10px', color: "#45542f" }}>
           press the 'Alt' key to mutate the text
         </p>
@@ -138,43 +102,87 @@ const App = () => {
         </p>
         <P5Canvas sentimentScore={sentimentScore} />
         <Canvas3d />
-        <div style={{ position: "absolute", top: '40px', textAlign: 'center', fontSize: "36px", color: "white" }}>
+        <div className='text-2xl'>
           Loading...
         </div>
       </div>
     )
   }
 
+  const handleChange = (e) => {
+    const { value } = e.target
+    setPoem(value)
+    // const prediction = sentimentModel.predict(value)
+    // setSentimentScore(prediction.score)
+  }
+
   return (
-    <div className="App">
-      <p style={{ position: "fixed", top: '20px', left: '10px', color: "#45542f" }}>
+    <div className="fixed w-full h-full p-8 flex justify-center bg-white">
+      <p style={{ position: "fixed", top: '40px', left: '20px', color: "#45542f" }}>
         press the 'Alt' key to mutate the text
       </p>
-      <p style={{ position: "fixed", top: '40px', left: '10px', color: "#45542f" }}>
+      <p style={{ position: "fixed", top: '60px', left: '20px', color: "#45542f" }}>
         better to play with sound on
       </p>
       <P5Canvas sentimentScore={sentimentScore} />
-      <Canvas3d />
-      <div style={{ zIndex: 999 }}>
-        <ReactTags
-          tags={tags}
-          // suggestions={suggestions}
-          delimiters={delimiters}
-          handleDelete={handleDelete}
-          handleAddition={handleAddition}
-          // handleDrag={handleDrag}
-          handleTagClick={handleTagClick}
-          inputFieldPosition="bottom"
-          classNames={{
-            tagInput: 'code'
-          }}
+      <Canvas3d seed={sentimentScore} />
+      <div className='w-[50%] h-[90%] rounded-lg shadow-lg p-4 bg-white/10'>
+        <textarea 
+          className='w-full h-full outline-none text-lg resize-none bg-transparent'
+          value={poem} 
+          onChange={handleChange}
         />
-        {/* <textarea 
-          className='code'
-          onChange={e => handleChange(e.target.value)}
-          value={poem}
-        /> */}
       </div>
+      <Popover className="relative">
+        {({ open }) => (
+          <>
+            <Popover.Button>
+              <span className='about' style={{ position: "fixed", top: '40px', right: '20px', color: "#45542f" }}>
+                About
+              </span>
+            </Popover.Button>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-200"
+              enterFrom="opacity-0 translate-y-1"
+              enterTo="opacity-100 translate-y-0"
+              leave="transition ease-in duration-150"
+              leaveFrom="opacity-100 translate-y-0"
+              leaveTo="opacity-0 translate-y-1"
+            >
+              <Popover.Panel className="fixed w-72 right-2 top-16">
+                <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5">
+                  <div className="relative grid gap-2 bg-white p-4 lg:grid-cols-1">
+                    <h3 className="text-xl">
+                      About this project
+                    </h3>
+                    <p className="text-sm">
+                      This project is about calming. It's a combination of poetry, music, and visual art.
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 py-2 px-2">
+                    <a
+                      href="https://wsdigital.dev"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flow-root rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50"
+                    >
+                      <span className="flex items-center">
+                        <span className="text-sm font-medium text-gray-900">
+                          By <u>Wasawat Somno</u>
+                        </span>
+                      </span>
+                      <span className="block text-sm text-gray-500">
+                        wsdigital.dev
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </Popover.Panel>
+            </Transition>
+          </>
+      )}
+      </Popover>
     </div>
   );
 }

@@ -1,6 +1,10 @@
 @import "/node_modules/draft-js/dist/Draft.css";
 @import "/node_modules/prismjs/themes/prism-dark.css";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   margin: 0;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
