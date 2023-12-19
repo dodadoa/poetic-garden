@@ -128,6 +128,7 @@ const App = () => {
       <Canvas3d seed={sentimentScore} />
       <div className='w-[50%] h-[90%] rounded-lg shadow-lg p-4 bg-white/10'>
         <textarea 
+          placeholder='Write a poem here...'
           className='w-full h-full outline-none text-lg resize-none bg-transparent'
           value={poem} 
           onChange={handleChange}
