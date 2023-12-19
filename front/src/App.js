@@ -121,15 +121,15 @@ const App = () => {
       <p style={{ position: "fixed", top: '40px', left: '20px', color: "#45542f" }}>
         press the 'Alt' key to mutate the text
       </p>
-      <p style={{ position: "fixed", top: '60px', left: '20px', color: "#45542f" }}>
+      {/* <p style={{ position: "fixed", top: '60px', left: '20px', color: "#45542f" }}>
         better to play with sound on
-      </p>
+      </p> */}
       <P5Canvas sentimentScore={sentimentScore} />
       <Canvas3d seed={sentimentScore} />
       <div className='w-[50%] h-[90%] rounded-lg shadow-lg p-4 bg-white/10'>
         <textarea 
           placeholder='Write a poem here...'
-          className='w-full h-full outline-none text-lg resize-none bg-transparent'
+          className='w-full h-full outline-none text-lg resize-none bg-transparent ring-1 ring-black/5'
           value={poem} 
           onChange={handleChange}
         />
