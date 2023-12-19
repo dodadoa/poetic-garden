@@ -97,9 +97,9 @@ const App = () => {
         <p style={{ position: "fixed", top: '20px', left: '10px', color: "#45542f" }}>
           press the 'Alt' key to mutate the text
         </p>
-        <p style={{ position: "fixed", top: '40px', left: '10px', color: "#45542f" }}>
+        {/* <p style={{ position: "fixed", top: '40px', left: '10px', color: "#45542f" }}>
           better to play with sound on
-        </p>
+        </p> */}
         <P5Canvas sentimentScore={sentimentScore} />
         <Canvas3d />
         <div className='text-2xl'>
@@ -157,7 +157,7 @@ const App = () => {
                       About this project
                     </h3>
                     <p className="text-sm">
-                      This project is about calming. It's a combination of poetry, music, and visual art.
+                      This project is about a combination of poetry, music, and visual art.
                     </p>
                   </div>
                   <div className="bg-gray-50 py-2 px-2">

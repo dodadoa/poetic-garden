@@ -26,5 +26,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-
 back-lang-chain/env
+back-lang-chain/.env
