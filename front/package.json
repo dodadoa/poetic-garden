@@ -24,6 +24,7 @@
     "rita": "^2.8.1",
     "simplex-noise": "^3.0.1",
     "three": "^0.145",
+    "three-custom-shader-material": "^5.4.0",
     "tone": "^14.7.77",
     "web-vitals": "^2.1.2"
   },

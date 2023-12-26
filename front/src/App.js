@@ -112,8 +112,6 @@ const App = () => {
   const handleChange = (e) => {
     const { value } = e.target
     setPoem(value)
-    // const prediction = sentimentModel.predict(value)
-    // setSentimentScore(prediction.score)
   }
 
   return (
@@ -125,11 +123,11 @@ const App = () => {
         better to play with sound on
       </p> */}
       <P5Canvas sentimentScore={sentimentScore} />
-      <Canvas3d seed={sentimentScore} />
-      <div className='w-[50%] h-[90%] rounded-lg shadow-lg p-4 bg-white/10'>
+      <Canvas3d/>
+      <div className='w-[50%] h-[90%] rounded-lg shadow-lg p-4 bg-white/50 ring-5 ring-black/5'>
         <textarea 
           placeholder='Write a poem here...'
-          className='w-full h-full outline-none text-lg resize-none bg-transparent ring-1 ring-black/5'
+          className='w-full h-full outline-none text-lg resize-none bg-transparent'
           value={poem} 
           onChange={handleChange}
         />
