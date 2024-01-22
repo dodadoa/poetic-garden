@@ -11,14 +11,6 @@ import './App.css'
 
 const OPTIONS_KEYS = ['Alt'];
 
-const reverb = new Tone.Reverb({
-  decay: 10,
-  wet: 0.8,
-  preDelay: 0.01
-}).toDestination();
-
-const synth = new Tone.AMSynth().connect(reverb).toDestination();
-
 const App = () => {
   const [sentimentModel, setSentimentModel] = useState(null)
   const [sentimentScore, setSentimentScore] = useState(0.0)
@@ -74,21 +66,67 @@ const App = () => {
     loadMl5()
   }, [])
 
+  useEffect(() => {
+    const reverb = new Tone.Reverb({
+      decay: 10,
+      wet: 0.8,
+      preDelay: 0.01
+    }).toDestination();
+
+    const AMsynth = new Tone.AMSynth().connect(reverb).toDestination();
+    const synth = new Tone.Synth().toDestination();
+
+    const feedbackDelay = new Tone.FeedbackDelay("1n", 0.5).toDestination();
+
+    const loop = new Tone.Loop(time => {
+      const octave = [1, 2]
+      const key = ["C", "D", "E", "F", "G", "A", "B"]
+      const randomKey = key[Math.floor(Math.random() * key.length)]
+      const randomOctave = octave[Math.floor(Math.random() * octave.length)]
+      
+      AMsynth.triggerAttack(randomKey + randomOctave, time);
+      AMsynth.oscillator.type = 'sine3';
+      AMsynth.triggerRelease("+3");
+
+      synth.connect(feedbackDelay);
+      synth.triggerAttackRelease(randomKey + randomOctave, time);
+      synth.oscillator.type = 'sine3';
+      synth.triggerRelease("+3");
+    }, '1n');
+
+    Tone.Transport.start();
+    loop.start(0);
+
+    return () => {
+      loop.stop();
+      loop.dispose();
+    };
+  }, []);
+
+
   const handler = ({ key }) => {
     if (OPTIONS_KEYS.includes(String(key))) {
       nextWord()
-    }
+      const reverb = new Tone.Reverb({
+        decay: 10,
+        wet: 0.2,
+        preDelay: 0.01
+      }).toDestination();
 
-    // if (key === 'Spacebar' || key === ' ' || key === 'Enter') {
-    //   const octave = [3, 4, 5]
-    //   const key = ["C", "D", "E", "F", "G", "A", "B"]
-    //   const randomKey = key[Math.floor(Math.random() * key.length)]
-    //   const randomOctave = octave[Math.floor(Math.random() * octave.length)]
-      
-    //   synth.triggerAttack(randomKey + randomOctave);
-    //   synth.oscillator.type = 'sine3';
-    //   synth.triggerRelease("+3");
-    // }
+      const pingPong = new Tone.PingPongDelay("4n", 0.2).toDestination();
+
+      const octave = [3,4,5]
+      const key = ["C", "D", "E", "F", "G", "A", "B"]
+      const randomKey = key[Math.floor(Math.random() * key.length)]
+      const randomOctave = octave[Math.floor(Math.random() * octave.length)]
+
+      const membraneSynth = new Tone.MembraneSynth().toDestination();
+      membraneSynth.triggerAttackRelease(randomKey + randomOctave, "1n");
+      membraneSynth.oscillator.type = 'sine3';
+      membraneSynth.connect(reverb);
+      membraneSynth.connect(pingPong);
+      membraneSynth.triggerRelease("+3");
+    }
   }
 
   useEventListener('keydown', handler);
