@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Bloom, DotScreen, EffectComposer, DepthOfField, Vignette } from '@react-three/postprocessing'
 import { BlendFunction } from 'postprocessing'
@@ -23,12 +24,12 @@ const Canvas3d = (props) => {
       />
       <ambientLight intensity={0.15} />
       <Tree position={[0, -2.5, 1]}/>
-      <Cloud />
+      <Cloud rand={props.rand}/>
     </>
   )
 }
 
-const CanvasWrapper = (props) => {
+const CanvasWrapper = memo((props) => {
   return (
     <div className="canvas3d-container">
       <Canvas>
@@ -47,11 +48,11 @@ const CanvasWrapper = (props) => {
           <DepthOfField focusDistance={2} focalLength={0.02} bokehScale={2} height={480} />
           <Vignette eskil={false} offset={0.1} darkness={1.1} />
         </EffectComposer>
-        <Canvas3d {...props} />
+        <Canvas3d {...props}/>
       </Canvas>
     </div>
   )
-}
+})
 
 export default CanvasWrapper
 

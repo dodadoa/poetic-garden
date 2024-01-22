@@ -24,6 +24,7 @@ const App = () => {
   const [sentimentScore, setSentimentScore] = useState(0.0)
   const [loading, setLoading] = useState(true)
   const [poem, setPoem] = useState('')
+  const [rand, setRand] = useState(Math.random())
 
   const nextWord = () => {
     let words = RiTa.tokenize(poem);
@@ -58,6 +59,7 @@ const App = () => {
       break;
     }
     setPoem(RiTa.untokenize(words))
+    setRand(Math.random())
   }
 
   useEffect(() => {
@@ -101,7 +103,7 @@ const App = () => {
           better to play with sound on
         </p> */}
         <P5Canvas sentimentScore={sentimentScore} />
-        <Canvas3d />
+        <Canvas3d rand={rand}/>
         <div className='text-2xl'>
           Loading...
         </div>
@@ -123,7 +125,7 @@ const App = () => {
         better to play with sound on
       </p> */}
       <P5Canvas sentimentScore={sentimentScore} />
-      <Canvas3d/>
+      <Canvas3d rand={rand}/>
       <div className='w-[50%] h-[90%] rounded-lg shadow-lg p-4 bg-white/50 ring-5 ring-black/5'>
         <textarea 
           placeholder='Write a poem here...'
@@ -133,7 +135,7 @@ const App = () => {
         />
       </div>
       <Popover className="relative">
-        {({ open }) => (
+        {() => (
           <>
             <Popover.Button>
               <span className='about' style={{ position: "fixed", top: '40px', right: '20px', color: "#45542f" }}>
