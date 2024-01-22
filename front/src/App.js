@@ -137,9 +137,9 @@ const App = () => {
         <p style={{ position: "fixed", top: '20px', left: '10px', color: "#45542f" }}>
           press the 'Alt' key to mutate the text
         </p>
-        {/* <p style={{ position: "fixed", top: '40px', left: '10px', color: "#45542f" }}>
+        <p style={{ position: "fixed", top: '40px', left: '10px', color: "#45542f" }}>
           better to play with sound on
-        </p> */}
+        </p>
         <P5Canvas sentimentScore={sentimentScore} />
         <Canvas3d rand={rand}/>
         <div className='text-2xl'>
@@ -159,9 +159,9 @@ const App = () => {
       <p style={{ position: "fixed", top: '40px', left: '20px', color: "#45542f" }}>
         press the 'Alt' key to mutate the text
       </p>
-      {/* <p style={{ position: "fixed", top: '60px', left: '20px', color: "#45542f" }}>
+      <p style={{ position: "fixed", top: '60px', left: '20px', color: "#45542f" }}>
         better to play with sound on
-      </p> */}
+      </p>
       <P5Canvas sentimentScore={sentimentScore} />
       <Canvas3d rand={rand}/>
       <div className='w-[50%] h-[90%] rounded-lg shadow-lg p-4 bg-white/50 ring-5 ring-black/5'>
