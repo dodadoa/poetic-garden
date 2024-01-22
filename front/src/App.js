@@ -85,6 +85,8 @@ const App = () => {
       }
       // Now the audio context is resumed, start the transport
       Tone.Transport.start();
+
+      nextWord()
     };
 
     startAudioContext()
