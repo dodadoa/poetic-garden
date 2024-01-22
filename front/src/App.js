@@ -52,6 +52,10 @@ const App = () => {
     }
     setPoem(RiTa.untokenize(words))
     setRand(Math.random())
+
+    const msg = new SpeechSynthesisUtterance();
+    msg.text = RiTa.untokenize(words);
+    window.speechSynthesis.speak(msg);
   }
 
   useEffect(() => {
