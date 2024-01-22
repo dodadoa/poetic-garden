@@ -11,6 +11,15 @@ import './App.css'
 
 const OPTIONS_KEYS = ['Alt'];
 
+const speech = (text) => {
+  const msg = new SpeechSynthesisUtterance();
+  msg.text = text;
+  msg.volume = 1; // From 0 to 1
+  msg.rate = 1; // From 0.1 to 10
+  msg.pitch = Math.random() * 2; // From 0 to 2
+  window.speechSynthesis.speak(msg);
+}
+
 const App = () => {
   const [sentimentModel, setSentimentModel] = useState(null)
   const [sentimentScore, setSentimentScore] = useState(0.0)
@@ -53,9 +62,7 @@ const App = () => {
     setPoem(RiTa.untokenize(words))
     setRand(Math.random())
 
-    const msg = new SpeechSynthesisUtterance();
-    msg.text = RiTa.untokenize(words);
-    window.speechSynthesis.speak(msg);
+    speech(RiTa.untokenize(words))
   }
 
   useEffect(() => {
@@ -71,6 +78,17 @@ const App = () => {
   }, [])
 
   useEffect(() => {
+    const startAudioContext = async () => {
+      // Check if the audio context is in "suspended" state (this is the case on first load in some browsers)
+      if (Tone.context.state !== 'running') {
+        await Tone.context.resume();
+      }
+      // Now the audio context is resumed, start the transport
+      Tone.Transport.start();
+    };
+
+    startAudioContext()
+
     const reverb = new Tone.Reverb({
       decay: 10,
       wet: 0.8,
@@ -87,18 +105,20 @@ const App = () => {
       const key = ["C", "D", "E", "F", "G", "A", "B"]
       const randomKey = key[Math.floor(Math.random() * key.length)]
       const randomOctave = octave[Math.floor(Math.random() * octave.length)]
-      
+
       AMsynth.triggerAttack(randomKey + randomOctave, time);
       AMsynth.oscillator.type = 'sine3';
       AMsynth.triggerRelease("+3");
+      AMsynth.volume.value = -4;
 
       synth.connect(feedbackDelay);
       synth.triggerAttackRelease(randomKey + randomOctave, time);
       synth.oscillator.type = 'sine3';
       synth.triggerRelease("+3");
+      synth.volume.value = -4;
+
     }, '1n');
 
-    Tone.Transport.start();
     loop.start(0);
 
     return () => {
@@ -125,11 +145,14 @@ const App = () => {
       const randomOctave = octave[Math.floor(Math.random() * octave.length)]
 
       const membraneSynth = new Tone.MembraneSynth().toDestination();
+
       membraneSynth.triggerAttackRelease(randomKey + randomOctave, "1n");
       membraneSynth.oscillator.type = 'sine3';
       membraneSynth.connect(reverb);
       membraneSynth.connect(pingPong);
       membraneSynth.triggerRelease("+3");
+      membraneSynth.volume.value = -12;
+
     }
   }
 
@@ -138,10 +161,10 @@ const App = () => {
   if (loading) {
     return (
       <div className="fixed w-full h-full p-8 flex justify-center bg-white">
-        <p style={{ position: "fixed", top: '20px', left: '10px', color: "#45542f" }}>
-          press the 'Alt' key to mutate the text
+        <p style={{ position: "fixed", top: '40px', left: '20px', color: "#45542f", textWrap: 'wrap', width: '15rem' }}>
+          press the 'Alt (or option in mac)' key to mutate the text
         </p>
-        <p style={{ position: "fixed", top: '40px', left: '10px', color: "#45542f" }}>
+        <p style={{ position: "fixed", top: '120px', left: '20px', color: "#45542f" }}>
           better to play with sound on
         </p>
         <P5Canvas sentimentScore={sentimentScore} />
@@ -160,10 +183,10 @@ const App = () => {
 
   return (
     <div className="fixed w-full h-full p-8 flex justify-center bg-white">
-      <p style={{ position: "fixed", top: '40px', left: '20px', color: "#45542f" }}>
-        press the 'Alt' key to mutate the text
+      <p style={{ position: "fixed", top: '40px', left: '20px', color: "#45542f", textWrap: 'wrap', width: '15rem' }}>
+        press the 'Alt (or option in mac)' key to mutate the text
       </p>
-      <p style={{ position: "fixed", top: '60px', left: '20px', color: "#45542f" }}>
+      <p style={{ position: "fixed", top: '120px', left: '20px', color: "#45542f" }}>
         better to play with sound on
       </p>
       <P5Canvas sentimentScore={sentimentScore} />
@@ -200,7 +223,10 @@ const App = () => {
                       About this project
                     </h3>
                     <p className="text-sm">
-                      This project is about a combination of poetry, music, and visual art.
+                    Touching the keyboard to feel the grass. 
+                    Hearing the synthesizer sound to feel the wind. 
+                    Mutating the word to feel the spirit. 
+                    Poetic Garden is a place to write poem with generative visual and sound.
                     </p>
                   </div>
                   <div className="bg-gray-50 py-2 px-2">
