@@ -27,6 +27,7 @@ const App = () => {
   const [poem, setPoem] = useState('')
   const [rand, setRand] = useState(Math.random())
   const [theme, setTheme] = useState('white')
+  const [fontSize, setFontSize] = useState(16)
 
   const nextWord = () => {
     let words = RiTa.tokenize(poem);
@@ -200,6 +201,7 @@ const App = () => {
           className='w-full h-full outline-none text-lg resize-none bg-transparent'
           value={poem} 
           onChange={handleChange}
+          style={{ fontSize: `${fontSize}px` }}
         />
       </div>
       <div className="flex flex-col gap-3 fixed top-2 right-2">
@@ -284,6 +286,21 @@ const App = () => {
                       </button>
                       <button className='bg-black text-white p-2 rounded-md' onClick={() => setTheme('black')}>
                         Black
+                      </button>
+                    </div>
+                    <div className="relative grid gap-2 bg-white p-4 lg:grid-cols-1">
+                      <h3 className="text-xl">Font Size</h3>
+                      <button className='bg-white text-black p-2 rounded-md' onClick={() => setFontSize(16)}>
+                        16
+                      </button>
+                      <button className='bg-white text-black p-2 rounded-md' onClick={() => setFontSize(20)}>
+                        20
+                      </button>
+                      <button className='bg-white text-black p-2 rounded-md' onClick={() => setFontSize(24)}>
+                        24
+                      </button>
+                      <button className='bg-white text-black p-2 rounded-md' onClick={() => setFontSize(28)}>
+                        28
                       </button>
                     </div>
                   </div>
