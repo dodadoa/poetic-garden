@@ -26,6 +26,7 @@ const App = () => {
   const [loading, setLoading] = useState(true)
   const [poem, setPoem] = useState('')
   const [rand, setRand] = useState(Math.random())
+  const [theme, setTheme] = useState('white')
 
   const nextWord = () => {
     let words = RiTa.tokenize(poem);
@@ -184,11 +185,11 @@ const App = () => {
   }
 
   return (
-    <div className="fixed w-full h-full p-8 flex justify-center bg-white">
-      <p style={{ position: "fixed", top: '40px', left: '20px', color: "#45542f", textWrap: 'wrap', width: '15rem' }}>
+    <div className={`fixed w-full h-full p-8 flex justify-center bg-${theme}`}>
+      <p style={{ position: "fixed", top: '40px', left: '20px', color: theme === 'white' ? "#45542f" : "white", textWrap: 'wrap', width: '15rem' }}>
         press the 'Alt (or option in mac)' key to mutate the text
       </p>
-      <p style={{ position: "fixed", top: '120px', left: '20px', color: "#45542f" }}>
+      <p style={{ position: "fixed", top: '120px', left: '20px', color: theme === 'white' ? "#45542f" : "white" }}>
         better to play with sound on
       </p>
       <P5Canvas sentimentScore={sentimentScore} />
@@ -201,59 +202,97 @@ const App = () => {
           onChange={handleChange}
         />
       </div>
-      <Popover className="relative">
-        {() => (
-          <>
-            <Popover.Button>
-              <span className='about' style={{ position: "fixed", top: '40px', right: '20px', color: "#45542f" }}>
-                About
-              </span>
-            </Popover.Button>
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-200"
-              enterFrom="opacity-0 translate-y-1"
-              enterTo="opacity-100 translate-y-0"
-              leave="transition ease-in duration-150"
-              leaveFrom="opacity-100 translate-y-0"
-              leaveTo="opacity-0 translate-y-1"
-            >
-              <Popover.Panel className="fixed w-72 right-2 top-16">
-                <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5">
-                  <div className="relative grid gap-2 bg-white p-4 lg:grid-cols-1">
-                    <h3 className="text-xl">
-                      About this project
-                    </h3>
-                    <p className="text-sm">
-                    Touching the keyboard to feel the grass. 
-                    Hearing the synthesizer sound to feel the wind. 
-                    Mutating the word to feel the spirit. 
-                    Poetic Garden is a place to write poem with generative visual and sound.
-                    </p>
-                  </div>
-                  <div className="bg-gray-50 py-2 px-2">
-                    <a
-                      href="https://wsdigital.dev"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flow-root rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50"
-                    >
-                      <span className="flex items-center">
-                        <span className="text-sm font-medium text-gray-900">
-                          By <u>Wasawat Somno</u>
+      <div className="flex flex-col gap-3 fixed top-2 right-2">
+        <Popover className="relative">
+          {() => (
+            <>
+              <Popover.Button>
+                <span className='about' style={{ color: theme === 'white' ? "#45542f" : "white" }}>
+                  About
+                </span>
+              </Popover.Button>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-200"
+                enterFrom="opacity-0 translate-y-1"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in duration-150"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-1"
+              >
+                <Popover.Panel className="absolute w-72 right-2 top-16">
+                  <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5">
+                    <div className="relative grid gap-2 bg-white p-4 lg:grid-cols-1">
+                      <h3 className="text-xl">
+                        About this project
+                      </h3>
+                      <p className="text-sm">
+                      Touching the keyboard to feel the grass. 
+                      Hearing the synthesizer sound to feel the wind. 
+                      Mutating the word to feel the spirit. 
+                      Poetic Garden is a place to write poem with generative visual and sound.
+                      </p>
+                    </div>
+                    <div className="bg-gray-50 py-2 px-2">
+                      <a
+                        href="https://wsdigital.dev"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flow-root rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50"
+                      >
+                        <span className="flex items-center">
+                          <span className="text-sm font-medium text-gray-900">
+                            By <u>Wasawat Somno</u>
+                          </span>
                         </span>
-                      </span>
-                      <span className="block text-sm text-gray-500">
-                        wsdigital.dev
-                      </span>
-                    </a>
+                        <span className="block text-sm text-gray-500">
+                          wsdigital.dev
+                        </span>
+                      </a>
+                    </div>
                   </div>
-                </div>
-              </Popover.Panel>
-            </Transition>
-          </>
-      )}
-      </Popover>
+                </Popover.Panel>
+              </Transition>
+            </>
+        )}
+        </Popover>
+        <Popover className="relative">
+          {() => (
+            <>
+              <Popover.Button>
+                <span className='about' style={{ color: theme === 'white' ? "#45542f" : "white" }}>
+                  Config
+                </span>
+              </Popover.Button>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-200"
+                enterFrom="opacity-0 translate-y-1"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in duration-150"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-1"
+              >
+                <Popover.Panel className="absolute w-72 right-2 top-18">
+                  <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5">
+                    <div className="relative grid gap-2 bg-white p-4 lg:grid-cols-1">
+                      <h3 className="text-xl">
+                        Theme
+                      </h3>
+                      <button className='bg-white text-black p-2 rounded-md' onClick={() => setTheme('white')}>
+                        White
+                      </button>
+                      <button className='bg-black text-white p-2 rounded-md' onClick={() => setTheme('black')}>
+                        Black
+                      </button>
+                    </div>
+                  </div>
+                </Popover.Panel>
+              </Transition>
+            </>
+        )}
+        </Popover>
+      </div>
     </div>
   );
 }
