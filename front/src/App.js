@@ -2,12 +2,13 @@ import React, { useEffect, useState, Fragment } from 'react'
 import useEventListener from '@use-it/event-listener'
 import RiTa from 'rita'
 import ml5 from 'ml5'
-import * as Tone from 'tone'
 import Canvas3d from './3d/Canvas3d'
 import P5Canvas from './2d/P5Canvas'
 import { Popover, Transition } from '@headlessui/react'
-
 import './App.css'
+
+// Dynamic import for Tone.js to avoid webpack issues
+let Tone = null
 
 const OPTIONS_KEYS = ['Alt'];
 
@@ -80,7 +81,13 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    const startAudioContext = async () => {
+    const initTone = async () => {
+      // Dynamically import Tone.js
+      if (!Tone) {
+        const ToneModule = await import('tone');
+        Tone = ToneModule;
+      }
+
       // Check if the audio context is in "suspended" state (this is the case on first load in some browsers)
       if (Tone.context.state !== 'running') {
         await Tone.context.resume();
@@ -91,7 +98,9 @@ const App = () => {
       nextWord()
     };
 
-    startAudioContext()
+    initTone()
+
+    if (!Tone) return;
 
     const reverb = new Tone.Reverb({
       decay: 10,
@@ -133,7 +142,7 @@ const App = () => {
 
 
   const handler = ({ key }) => {
-    if (OPTIONS_KEYS.includes(String(key))) {
+    if (OPTIONS_KEYS.includes(String(key)) && Tone) {
       nextWord()
       const reverb = new Tone.Reverb({
         decay: 10,
