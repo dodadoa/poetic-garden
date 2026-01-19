@@ -81,6 +81,8 @@ const App = () => {
   }, [])
 
   useEffect(() => {
+    let loop;
+    
     const initTone = async () => {
       // Dynamically import Tone.js
       if (!Tone) {
@@ -96,47 +98,48 @@ const App = () => {
       Tone.Transport.start();
 
       nextWord()
+
+      // Create audio instruments after Tone is loaded
+      const reverb = new Tone.Reverb({
+        decay: 10,
+        wet: 0.8,
+        preDelay: 0.01
+      }).toDestination();
+
+      const AMsynth = new Tone.AMSynth().connect(reverb).toDestination();
+      const synth = new Tone.Synth().toDestination();
+
+      const feedbackDelay = new Tone.FeedbackDelay("1n", 0.5).toDestination();
+
+      loop = new Tone.Loop(time => {
+        const octave = [1, 2]
+        const key = ["C", "D", "E", "F", "G", "A", "B"]
+        const randomKey = key[Math.floor(Math.random() * key.length)]
+        const randomOctave = octave[Math.floor(Math.random() * octave.length)]
+
+        AMsynth.triggerAttack(randomKey + randomOctave, time);
+        AMsynth.oscillator.type = 'sine3';
+        AMsynth.triggerRelease("+3");
+        AMsynth.volume.value = -4;
+
+        synth.connect(feedbackDelay);
+        synth.triggerAttackRelease(randomKey + randomOctave, time);
+        synth.oscillator.type = 'sine3';
+        synth.triggerRelease("+3");
+        synth.volume.value = -4;
+
+      }, '1n');
+
+      loop.start(0);
     };
 
     initTone()
 
-    if (!Tone) return;
-
-    const reverb = new Tone.Reverb({
-      decay: 10,
-      wet: 0.8,
-      preDelay: 0.01
-    }).toDestination();
-
-    const AMsynth = new Tone.AMSynth().connect(reverb).toDestination();
-    const synth = new Tone.Synth().toDestination();
-
-    const feedbackDelay = new Tone.FeedbackDelay("1n", 0.5).toDestination();
-
-    const loop = new Tone.Loop(time => {
-      const octave = [1, 2]
-      const key = ["C", "D", "E", "F", "G", "A", "B"]
-      const randomKey = key[Math.floor(Math.random() * key.length)]
-      const randomOctave = octave[Math.floor(Math.random() * octave.length)]
-
-      AMsynth.triggerAttack(randomKey + randomOctave, time);
-      AMsynth.oscillator.type = 'sine3';
-      AMsynth.triggerRelease("+3");
-      AMsynth.volume.value = -4;
-
-      synth.connect(feedbackDelay);
-      synth.triggerAttackRelease(randomKey + randomOctave, time);
-      synth.oscillator.type = 'sine3';
-      synth.triggerRelease("+3");
-      synth.volume.value = -4;
-
-    }, '1n');
-
-    loop.start(0);
-
     return () => {
-      loop.stop();
-      loop.dispose();
+      if (loop) {
+        loop.stop();
+        loop.dispose();
+      }
     };
   }, []);
 
